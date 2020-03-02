@@ -133,45 +133,45 @@ __posh_git_echo () {
     local BrightYellow='\033[0;93m'
     local BrightCyan='\033[0;96m'
 
-    local DefaultForegroundColor=$(__posh_color '\e[m') # Default no color
+    # local DefaultForegroundColor=$(__posh_color '\e[m') # Default no color
     local DefaultBackgroundColor=
 
     local BeforeText='['
-    local BeforeForegroundColor=$(__posh_color $BrightYellow) # Yellow
+    # local BeforeForegroundColor=$(__posh_color $BrightYellow) # Yellow
     local BeforeBackgroundColor=
     local DelimText=' |'
-    local DelimForegroundColor=$(__posh_color $BrightYellow) # Yellow
+    # local DelimForegroundColor=$(__posh_color $BrightYellow) # Yellow
     local DelimBackgroundColor=
 
     local AfterText=']'
-    local AfterForegroundColor=$(__posh_color $BrightYellow) # Yellow
+    # local AfterForegroundColor=$(__posh_color $BrightYellow) # Yellow
     local AfterBackgroundColor=
 
-    local BranchForegroundColor=$(__posh_color $BrightCyan)  # Cyan
+    # local BranchForegroundColor=$(__posh_color $BrightCyan)  # Cyan
     local BranchBackgroundColor=
-    local BranchAheadForegroundColor=$(__posh_color $BrightGreen) # Green
+    # local BranchAheadForegroundColor=$(__posh_color $BrightGreen) # Green
     local BranchAheadBackgroundColor=
-    local BranchBehindForegroundColor=$(__posh_color $BrightRed) # Red
+    # local BranchBehindForegroundColor=$(__posh_color $BrightRed) # Red
     local BranchBehindBackgroundColor=
-    local BranchBehindAndAheadForegroundColor=$(__posh_color $BrightYellow) # Yellow
+    # local BranchBehindAndAheadForegroundColor=$(__posh_color $BrightYellow) # Yellow
     local BranchBehindAndAheadBackgroundColor=
 
     local BeforeIndexText=''
-    local BeforeIndexForegroundColor=$(__posh_color $Green) # Dark green
+    # local BeforeIndexForegroundColor=$(__posh_color $Green) # Dark green
     local BeforeIndexBackgroundColor=
 
-    local IndexForegroundColor=$(__posh_color $Green) # Dark green
+    # local IndexForegroundColor=$(__posh_color $Green) # Dark green
     local IndexBackgroundColor=
 
-    local WorkingForegroundColor=$(__posh_color $Red) # Dark red
+    # local WorkingForegroundColor=$(__posh_color $Red) # Dark red
     local WorkingBackgroundColor=
 
-    local StashForegroundColor=$(__posh_color $BrightRed) # Red
+    # local StashForegroundColor=$(__posh_color $BrightRed) # Red
     local StashBackgroundColor=
     local BeforeStash='('
     local AfterStash=')'
 
-    local RebaseForegroundColor=$(__posh_color '\e[0m') # reset
+    # local RebaseForegroundColor=$(__posh_color '\e[0m') # reset
     local RebaseBackgroundColor=
 
     local BranchBehindAndAheadDisplay=`git config --get bash.branchBehindAndAheadDisplay`
@@ -363,14 +363,15 @@ __posh_git_echo () {
     fi
 
     local gitstring=
-    local branchstring="$isBare${b##refs/heads/}"
+    # local branchstring="$isBare${b##refs/heads/}"
 
     # before-branch text
-    gitstring="$BeforeBackgroundColor$BeforeForegroundColor$BeforeText"
+    # gitstring="$BeforeBackgroundColor$BeforeForegroundColor$BeforeText"
 
     # branch
     if (( $__POSH_BRANCH_BEHIND_BY > 0 && $__POSH_BRANCH_AHEAD_BY > 0 )); then
-        gitstring+="$BranchBehindAndAheadBackgroundColor$BranchBehindAndAheadForegroundColor$branchstring"
+        # gitstring+="$BranchBehindAndAheadBackgroundColor$BranchBehindAndAheadForegroundColor$branchstring"
+        gitstring+="$BranchBehindAndAheadBackgroundColor"
         if [ "$BranchBehindAndAheadDisplay" = "full" ]; then
             gitstring+="$BranchBehindStatusSymbol$__POSH_BRANCH_BEHIND_BY$BranchAheadStatusSymbol$__POSH_BRANCH_AHEAD_BY"
         elif [ "$BranchBehindAndAheadDisplay" = "compact" ]; then
@@ -379,14 +380,16 @@ __posh_git_echo () {
             gitstring+=" $BranchBehindAndAheadStatusSymbol"
         fi
     elif (( $__POSH_BRANCH_BEHIND_BY > 0 )); then
-        gitstring+="$BranchBehindBackgroundColor$BranchBehindForegroundColor$branchstring"
+        # gitstring+="$BranchBehindBackgroundColor$BranchBehindForegroundColor$branchstring"
+        gitstring+="$BranchBehindBackgroundColor"
         if [ "$BranchBehindAndAheadDisplay" = "full" -o "$BranchBehindAndAheadDisplay" = "compact" ]; then
             gitstring+="$BranchBehindStatusSymbol$__POSH_BRANCH_BEHIND_BY"
         else
             gitstring+="$BranchBehindStatusSymbol"
         fi
     elif (( $__POSH_BRANCH_AHEAD_BY > 0 )); then
-        gitstring+="$BranchAheadBackgroundColor$BranchAheadForegroundColor$branchstring"
+        # gitstring+="$BranchAheadBackgroundColor$BranchAheadForegroundColor$branchstring"
+        gitstring+="$BranchAheadBackgroundColor"
         if [ "$BranchBehindAndAheadDisplay" = "full" -o "$BranchBehindAndAheadDisplay" = "compact" ]; then
             gitstring+="$BranchAheadStatusSymbol$__POSH_BRANCH_AHEAD_BY"
         else
@@ -394,10 +397,12 @@ __posh_git_echo () {
         fi
     elif (( $divergence_return_code )); then
         # ahead and behind are both 0, but there was some problem while executing the command.
-        gitstring+="$BranchBackgroundColor$BranchForegroundColor$branchstring$BranchWarningStatusSymbol"
+        # gitstring+="$BranchBackgroundColor$BranchForegroundColor$branchstring$BranchWarningStatusSymbol"
+        gitstring+="$BranchBackgroundColor$BranchWarningStatusSymbol"
     else
         # ahead and behind are both 0, and the divergence was determined successfully
-        gitstring+="$BranchBackgroundColor$BranchForegroundColor$branchstring$BranchIdenticalStatusSymbol"
+        # gitstring+="$BranchBackgroundColor$BranchForegroundColor$branchstring$BranchIdenticalStatusSymbol"
+        gitstring+="$BranchBackgroundColor$BranchIdenticalStatusSymbol"
     fi
 
     # index status
@@ -405,29 +410,37 @@ __posh_git_echo () {
         local indexCount="$(( $indexAdded + $indexModified + $indexDeleted + $indexUnmerged ))"
         local workingCount="$(( $filesAdded + $filesModified + $filesDeleted + $filesUnmerged ))"
         if (( $indexCount != 0 )) || $ShowStatusWhenZero; then
-            gitstring+="$IndexBackgroundColor$IndexForegroundColor +$indexAdded ~$indexModified -$indexDeleted"
+            # gitstring+="$IndexBackgroundColor$IndexForegroundColor +$indexAdded ~$indexModified -$indexDeleted"
+            gitstring+="$IndexBackgroundColor +$indexAdded ~$indexModified -$indexDeleted"
         fi
         if (( $indexUnmerged != 0 )); then
-            gitstring+=" $IndexBackgroundColor$IndexForegroundColor!$indexUnmerged"
+            # gitstring+=" $IndexBackgroundColor$IndexForegroundColor!$indexUnmerged"
+            gitstring+=" $IndexBackgroundColor!$indexUnmerged"
         fi
         if (( $indexCount != 0 && ($workingCount != 0 || $ShowStatusWhenZero) )); then
-            gitstring+="$DelimBackgroundColor$DelimForegroundColor$DelimText"
+            # gitstring+="$DelimBackgroundColor$DelimForegroundColor$DelimText"
+            gitstring+="$DelimBackgroundColor$DelimText"
         fi
         if (( $workingCount != 0 )) || $ShowStatusWhenZero; then
-            gitstring+="$WorkingBackgroundColor$WorkingForegroundColor +$filesAdded ~$filesModified -$filesDeleted"
+            # gitstring+="$WorkingBackgroundColor$WorkingForegroundColor +$filesAdded ~$filesModified -$filesDeleted"
+            gitstring+="$WorkingBackgroundColor +$filesAdded ~$filesModified -$filesDeleted"
         fi
         if (( $filesUnmerged != 0 )); then
-            gitstring+=" $WorkingBackgroundColor$WorkingForegroundColor!$filesUnmerged"
+            # gitstring+=" $WorkingBackgroundColor$WorkingForegroundColor!$filesUnmerged"
+            gitstring+=" $WorkingBackgroundColor!$filesUnmerged"
         fi
     fi
-    gitstring+="${rebase:+$RebaseForegroundColor$RebaseBackgroundColor$rebase}"
+    # gitstring+="${rebase:+$RebaseForegroundColor$RebaseBackgroundColor$rebase}"
+    gitstring+="${rebase:+$RebaseBackgroundColor$rebase}"
 
     if $EnableStashStatus && $hasStash; then
-        gitstring+="$DefaultBackgroundColor$DefaultForegroundColor $StashBackgroundColor$StashForegroundColor$BeforeStash$stashCount$AfterStash"
+        # gitstring+="$DefaultBackgroundColor$DefaultForegroundColor $StashBackgroundColor$StashForegroundColor$BeforeStash$stashCount$AfterStash"
+        gitstring+="$DefaultBackgroundColor $StashBackgroundColor$BeforeStash$stashCount$AfterStash"
     fi
 
     # after-branch text
-    gitstring+="$AfterBackgroundColor$AfterForegroundColor$AfterText$DefaultBackgroundColor$DefaultForegroundColor"
+    # gitstring+="$AfterBackgroundColor$AfterForegroundColor$AfterText$DefaultBackgroundColor$DefaultForegroundColor"
+    gitstring+="$AfterBackgroundColor$DefaultBackgroundColor"
     echo "$gitstring"
 }
 
